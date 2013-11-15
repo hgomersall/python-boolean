@@ -1,0 +1,95 @@
+python-boolean
+==============
+
+A few neat functions under a liberal license to read in a string 
+representing a Boolean expression and return various handy forms.
+
+It uses [pyparsing](http://pyparsing.wikispaces.com/) to do the 
+heavy lifting of the parsing, and uses a Quine-McCluskey algorithm
+written by George Prekas based on code by Robert Dick and Pat Maupin
+(wholly contained within `qm.py`).
+
+Mostly the functions of interest are within `logic.py` and are
+self explanatory with examples, but the interesting stuff
+is as below.
+
+Functions
+---------
+
+### `parse_boolean_function_string(boolean_string, boolean_variables)`
+
+Parses the string using the passed iterable of boolean variables 
+and constructs a callable that implements the boolean function that 
+the string describes.
+
+The four logical operands that are allowed, in order of precedence, 
+are:
+* NOT: 'NOT', '~', '!'
+* AND: 'AND', '.', '&'
+* OR: 'OR', '+', '|'
+* XOR: 'XOR'
+
+The word form of each of the above is not case dependent.
+
+Parantheses can be used to explicitly denote precedence.
+
+The callable takes a dictionary of variables to their logical values
+and returns the result of applying the boolean function to those
+variables.
+
+    >>> func = parse_boolean_function_string('A XOR B', ['A', 'B'])
+    >>> func({'A':True, 'B':False})
+    True
+    >>> func({'A':True, 'B':True})
+    False
+
+    >>> func = parse_boolean_function_string('not (A and B)', ['A', 'B'])
+    >>> func({'A':False, 'B':False})
+    True
+    >>> func({'A':True, 'B':True})
+    False
+    >>> func({'A':False, 'B':True})
+    True
+
+    >>> func = parse_boolean_function_string('A.B+~B', ['A', 'B'])
+    >>> print(func)
+    ((A . B) + ~B)
+    >>> func({'A':True, 'B':False})
+    True
+    >>> func({'A':False, 'B':False})
+    True
+    >>> func({'A':False, 'B':True})
+    False
+
+### `get_minimal_sop_from_string(boolean_string, boolean_variables)`
+
+Get the minimal sum of products as a list of lists which 
+correspond to products and sums respectively.
+
+Each entry in the inner list corresponds to a boolean variable
+given in the `boolean_variables` argument, and in the same order.
+
+The value of each entry in the inner list is either True, False
+or None, according to whether that variable should be True, 
+False or "Don't care" in generating a True output.
+
+An empty string will return all "Don't care".
+
+    >>> get_minimal_sop_from_string('A AND B', ['A', 'B', 'C'])
+    [[True, True, None]]
+    >>> get_minimal_sop_from_string('A OR C', ['A', 'B', 'C'])
+    [[True, None, None], [None, None, True]]
+    >>> get_minimal_sop_from_string('', ['A', 'B', 'C'])
+    [[None, None, None]]
+
+### `get_canonical_minimal_sop_from_string(boolean_string, boolean_variables)`
+    
+Returns the full minimal canonical form for all the variables
+passed, given the string, or simply '0' if the string always evaluates
+to False.
+
+This function is used by `get_minimal_sop_from_string`.
+    
+    >>> get_canonical_minimal_sop_from_string('A AND (B OR C)', ['A', 'B', 'C'])
+    [(3, 4), (5, 2)]
+
