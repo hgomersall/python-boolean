@@ -16,7 +16,7 @@ is as below.
 Functions
 ---------
 
-### `parse_boolean_function_string(boolean_string, boolean_variables)`
+##### `parse_boolean_function_string(boolean_string, boolean_variables)`
 
 Parses the string using the passed iterable of boolean variables 
 and constructs a callable that implements the boolean function that 
@@ -61,7 +61,7 @@ variables.
     >>> func({'A':False, 'B':True})
     False
 
-### `get_minimal_sop_from_string(boolean_string, boolean_variables)`
+##### `get_minimal_sop_from_string(boolean_string, boolean_variables)`
 
 Get the minimal sum of products as a list of lists which 
 correspond to products and sums respectively.
@@ -82,7 +82,7 @@ An empty string will return all "Don't care".
     >>> get_minimal_sop_from_string('', ['A', 'B', 'C'])
     [[None, None, None]]
 
-### `get_canonical_minimal_sop_from_string(boolean_string, boolean_variables)`
+##### `get_canonical_minimal_sop_from_string(boolean_string, boolean_variables)`
     
 Returns the full minimal canonical form for all the variables
 passed, given the string, or simply '0' if the string always evaluates
