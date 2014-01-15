@@ -263,7 +263,7 @@ def get_canonical_minimal_sop_from_string(
 
 def get_minimal_sop_from_string(boolean_string, boolean_variables):
     '''Get the minimal sum of products as a list of lists which 
-    correspond to products and sums respectively.
+    correspond to the sum and products respectively.
 
     Each entry in the inner list corresponds to a boolean variable
     given in the boolean_variables argument, and in the same order.
