@@ -203,7 +203,7 @@ def parse_boolean_function_string(boolean_string, boolean_variables):
 
     func = bool_parser.parseString(boolean_string, parseAll=True)[0]
 
-    if type(func) is str:
+    if (type(func) is str) or (type(func) is unicode):
         var_str = func
         func = lambda bool_var_dict: bool_var_dict[var_str]
 
